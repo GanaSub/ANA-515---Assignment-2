@@ -1,0 +1,56 @@
+---
+title: "ANA 515 - Assignment 2"
+author: "Ganapathy Subramanian"
+date: 11-10-2021
+output: 
+  html_document:
+  theme:
+    bootswatch: "cerulean"
+  
+      
+---
+```{r setup, include = FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(bslib)
+```
+
+```{r, include = TRUE}
+# Section 1
+# The dataset I am using is about the crashes that happen on US roads and freeways and the various reasons that they happen. We also have data from the insurance firms regarding how much have been claimed from those accidents. This data is collected by the NHTSA (National Highway Traffic Safety Administration) between 2009 and 2012. From this dataset, we can hope to find the major root causes for accidents and try to build solutions to prevent them from happening in future. This file is stored in CSV format without any delimiters.
+
+```
+
+```{r, include = TRUE}
+# Section 2
+drivers <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/bad-drivers/bad-drivers.csv"
+car_crashes <- read.csv(drivers)
+```
+
+```{r, include = TRUE}
+#Section 3
+colnames(car_crashes)
+c1 <- rename(car_crashes,Collisions_perBillionmiles = Number.of.drivers.involved.in.fatal.collisions.per.billion.miles)
+c2 <- rename(c1,Percentage_speeding = Percentage.Of.Drivers.Involved.In.Fatal.Collisions.Who.Were.Speeding)
+c3 <- rename(c2,Percent_NotDistracted = Percentage.Of.Drivers.Involved.In.Fatal.Collisions.Who.Were.Not.Distracted)
+c4 <- rename(c3,Percent_NotInvolvedinprevcrashes = Percentage.Of.Drivers.Involved.In.Fatal.Collisions.Who.Had.Not.Been.Involved.In.Any.Previous.Accidents)
+colnames(c4)
+```
+
+```{r, include = TRUE}
+#Section 4
+```
+The data frame has `r nrow(c4)` rows and `r ncol(c4)` columns. The names and brief description of the columns are in the table below:
+
+```{r, include = TRUE}
+crash_table <- matrix(c("State","Name of State","Collision per billion miles","Number of collisions per Bil_miles", "Percent Speeding","Fatal collisions due to speeding","DUI","Driving under Influence","Distracted Drivers","Collisions due to distractions","History","Drivers with no history","Insurance premiums","Cost of insurance","Losses","Losses by insurance company"),ncol = 2, byrow = TRUE)
+colnames(crash_table) <- c('columnname','description')
+crash_table <-as.table(crash_table)
+crash_table
+```
+```{r, include = TRUE}
+# Section 05 
+baddrivers_four <- subset(c4, select= c(State,Collisions_perBillionmiles, Percentage_speeding,Percent_NotDistracted,Percent_NotInvolvedinprevcrashes))
+summary_four <- summary(baddrivers_four)
+print(summary_four)
